@@ -7,21 +7,30 @@
 //
 
 import Cocoa
+import KeychainAccess
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-
-    @IBOutlet weak var window: NSWindow!
-
-
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: #selector(AppDelegate.didConnectedToTokyoTech(_:)), name: Connector.TTLoginedNotification, object: nil)
+        
+    }
+    
+    func didConnectedToTokyoTech(notification: NSNotification) {
+        let userNC = NSUserNotificationCenter.defaultUserNotificationCenter()
+        let userNotif = NSUserNotification()
+        userNotif.title = "Logined to TokyoTech"
+        userNotif.informativeText = "Maybe logined."
+        
+        userNC.deliverNotification(userNotif)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
-        // Insert code here to tear down your application
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self)
     }
-
 
 }
 
